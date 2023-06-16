@@ -94,6 +94,27 @@ export class AuthService {
       data: { hashedRefreshToken: hashedRefreshToken },
     });
   }
+
+  async getNewToken(userId: number, rt: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new ForbiddenException('User not found');
+    }
+    const doRefreshTokenMatch = await argon.verify(user.hashedRefreshToken, rt);
+
+    if (!doRefreshTokenMatch) {
+      throw new ForbiddenException('Invalid refresh token');
+    }
+    const { accessToken, refreshToken } = await this.createToken(
+      user.id,
+      user.email,
+    );
+    const { hashedPassword, ...result } = user;
+    await this.updateRefreshToken(user.id, refreshToken);
+    return { accessToken, refreshToken, result };
+  }
+
   findAll() {
     return `This action returns all auth`;
   }

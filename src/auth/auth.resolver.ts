@@ -7,16 +7,19 @@ import { SignResponse } from './dto/sign-response';
 import { SignInInput } from './dto/signin-input';
 import { LogoutResponse } from './dto/logout-response';
 import { type } from 'os';
+import { Public } from './decorations/public.decorator';
 
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Mutation(() => SignResponse)
   signup(@Args('signUpInput') signUpInput: SignUpInput) {
     return this.authService.signup(signUpInput);
   }
 
+  @Public()
   @Mutation(() => SignResponse)
   signin(@Args('signInInput') signInInput: SignInInput) {
     return this.authService.signin(signInInput);
@@ -40,5 +43,10 @@ export class AuthResolver {
   @Mutation(() => Auth)
   removeAuth(@Args('id', { type: () => Int }) id: number) {
     return this.authService.remove(id);
+  }
+
+  @Query(() => String)
+  hello() {
+    return 'hello';
   }
 }
