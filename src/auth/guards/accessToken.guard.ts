@@ -8,11 +8,6 @@ export class AccessTokenGuard extends AuthGuard('jwt') {
     super();
   }
 
-  getRequest(context: ExecutionContext) {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
-  }
-
   canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride('isPublic', [
       context.getHandler(),

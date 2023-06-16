@@ -8,7 +8,13 @@ import { SignInInput } from './dto/signin-input';
 import { LogoutResponse } from './dto/logout-response';
 import { type } from 'os';
 import { Public } from './decorations/public.decorator';
-
+import { CurrentUser } from './decorations/currentUser.decorator';
+import { JwtPayloadWithRefreshToken } from './types';
+import { AccessTokenGuard } from './guards/accessToken.guard';
+import { NewTokenResponse } from './dto/newTokenResponse';
+import { CurrentUserId } from './decorations/currentUserId.decorator';
+import { UseGuards } from '@nestjs/common';
+import { RefreshTokenGuard } from './guards/refreshToken.guard';
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
@@ -44,9 +50,18 @@ export class AuthResolver {
   removeAuth(@Args('id', { type: () => Int }) id: number) {
     return this.authService.remove(id);
   }
-
+  @Public()
   @Query(() => String)
-  hello() {
-    return 'hello';
+  hello(@CurrentUser() user: any) {
+    return 'HELLO';
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Mutation(() => NewTokenResponse)
+  getNewToken(
+    @CurrentUserId() userId: number,
+    @CurrentUser('refreshToken') refreshToken: string,
+  ) {
+    return this.authService.getNewToken(userId, refreshToken);
   }
 }
