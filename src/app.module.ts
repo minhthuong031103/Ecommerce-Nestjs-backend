@@ -5,19 +5,32 @@ import { join } from 'path';
 import { PrismaService } from './prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
+import { ProductModule } from './product/product.module';
+import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      useFactory: (config: ConfigService) => {
+        return {
+          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+          cors: {
+            origin: config.get('CLIENT_URL'),
+          },
+          sortSchema: true,
+          playground: true,
+        };
+      },
+      inject: [ConfigService],
     }),
     AuthModule,
     UserModule,
+    ProductModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [

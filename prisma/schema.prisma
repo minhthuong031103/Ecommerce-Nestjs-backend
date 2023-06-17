@@ -19,3 +19,13 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+model Product{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  image String
+  price Float
+  brand String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
