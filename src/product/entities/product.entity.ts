@@ -10,8 +10,8 @@ export class Product {
   description: string;
   @Field(() => Float)
   price: any;
-  @Field(() => Float)
-  original_price: any;
+  @Field(() => Float, { nullable: true })
+  original_price?: any;
 
   @Field()
   subtitle: string;
@@ -22,8 +22,8 @@ export class Product {
   image: string;
   @Field()
   createdAt: Date;
-  @Field(() => Thumbnail)
+  @Field(() => [Thumbnail])
   Thumbnail: Thumbnail[];
-  @Field(() => Category)
-  Category: Category;
+  @Field(() => [Category])
+  Category: [Category];
 }

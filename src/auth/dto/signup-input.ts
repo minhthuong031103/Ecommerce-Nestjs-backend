@@ -16,4 +16,14 @@ export class SignUpInput {
   @IsString()
   @Field()
   password: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  phone: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  address: string;
 }

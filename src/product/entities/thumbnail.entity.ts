@@ -4,6 +4,15 @@ import { ThumbnailContent1 } from './thumbnailContent.entity';
 
 @ObjectType()
 export class Thumbnail {
-  @Field(() => [ThumbnailContent1])
-  ThumbnailContent: [ThumbnailContent1];
+  @Field(() => Int)
+  id: number;
+
+  @Field()
+  url: string;
+
+  @Field()
+  createdAt: Date;
+
+  @Field(() => Int)
+  productSlug: number;
 }

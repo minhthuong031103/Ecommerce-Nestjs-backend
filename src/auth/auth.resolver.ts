@@ -16,12 +16,13 @@ import { CurrentUserId } from './decorations/currentUserId.decorator';
 import { UseGuards } from '@nestjs/common';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { SignInResponse } from './dto/signUp-response';
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
-  @Mutation(() => SignResponse)
+  @Mutation(() => SignInResponse)
   signup(@Args('signUpInput') signUpInput: SignUpInput) {
     return this.authService.signup(signUpInput);
   }

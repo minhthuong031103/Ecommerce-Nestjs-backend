@@ -18,38 +18,39 @@ export class AuthService {
 
   async signup(signUpInput: SignUpInput) {
     const hashedPasswordArgon = await argon.hash(signUpInput.password);
+    const phone = await this.prisma.user.findUnique({
+      where: { phone: signUpInput.phone },
+    });
+    if (phone) throw new ForbiddenException('Phone number already exists');
+    const email = await this.prisma.user.findUnique({
+      where: { email: signUpInput.email },
+    });
+    if (email) throw new ForbiddenException('Email already exists');
     const user = await this.prisma.user.create({
       data: {
         name: signUpInput.name,
         email: signUpInput.email,
+        phone: signUpInput.phone,
+        address: signUpInput.address,
         hashedPassword: hashedPasswordArgon,
       },
     });
-    const { accessToken, refreshToken } = await this.createToken(
-      user.id,
-      user.email,
-    );
-    await this.updateRefreshToken(user.id, refreshToken);
-    const { hashedPassword, ...result } = user;
-    return {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      user: result,
-    };
+    if (user) return { message: 'User created successfully' };
+    else return { message: 'User creation failed' };
   }
   async signin(signInInput: SignInInput) {
     const user = await this.prisma.user.findUnique({
       where: { email: signInInput.email },
     });
     if (!user) {
-      throw new ForbiddenException('User not found');
+      throw new ForbiddenException('Invalid user');
     }
     const isPasswordValid = await argon.verify(
       user.hashedPassword,
       signInInput.password,
     );
     if (!isPasswordValid) {
-      throw new ForbiddenException('Invalid password');
+      throw new ForbiddenException('Invalid user');
     }
     const { accessToken, refreshToken } = await this.createToken(
       user.id,

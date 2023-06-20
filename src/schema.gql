@@ -38,7 +38,7 @@ type Mutation {
   logout(id: Int!): LogoutResponse!
   removeAuth(id: Int!): Auth!
   signin(signInInput: SignInInput!): SignResponse!
-  signup(signUpInput: SignUpInput!): SignResponse!
+  signup(signUpInput: SignUpInput!): SignInResponse!
   updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
 }
 
@@ -48,13 +48,13 @@ type NewTokenResponse {
 }
 
 type Product {
-  Category: Category!
-  Thumbnail: Thumbnail!
+  Category: [Category!]!
+  Thumbnail: [Thumbnail!]!
   createdAt: DateTime!
   description: String!
   image: String!
   name: String!
-  original_price: Float!
+  original_price: Float
   price: Float!
   slug: Int!
   subtitle: String!
@@ -72,6 +72,10 @@ input SignInInput {
   password: String!
 }
 
+type SignInResponse {
+  message: String!
+}
+
 type SignResponse {
   accessToken: String!
   refreshToken: String!
@@ -79,27 +83,27 @@ type SignResponse {
 }
 
 input SignUpInput {
+  address: String!
   email: String!
   name: String!
   password: String!
+  phone: String!
 }
 
 type Thumbnail {
-  ThumbnailContent: [ThumbnailContent1!]!
-}
-
-type ThumbnailContent1 {
-  Product: Product!
   createdAt: DateTime!
   id: Int!
+  productSlug: Int!
   url: String!
 }
 
 input UpdateAuthInput {
+  address: String
   email: String
   id: Int!
   name: String
   password: String
+  phone: String
 }
 
 type User {

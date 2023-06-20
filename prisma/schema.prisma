@@ -15,6 +15,8 @@ model User {
   hashedRefreshToken String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  phone              String? @unique
+  address            String?
 }
 
 model Product {
@@ -24,13 +26,12 @@ model Product {
   price          Float?
   original_price Float?
   description    String?
-  size           Json?       @db.Json
+  size           Json?       @default("{   \"data\": [     {       \"size\": \"UK 6\",       \"number\": 10     },     {       \"size\": \"UK 6.5\",       \"number\": 10     },     {       \"size\": \"UK 7\",       \"number\": 10     },     {       \"size\": \"UK 7.5\",       \"number\": 10     },     {       \"size\": \"UK 8\",       \"number\": 10     },     {       \"size\": \"UK 8.5\",       \"number\": 10     },     {       \"size\": \"UK 9\",       \"number\": 10     },     {       \"size\": \"UK 9.5\",       \"number\": 10     },     {       \"size\": \"UK 10\",       \"number\": 10     },     {       \"size\": \"UK 10.5\",       \"number\": 10     },     {       \"size\": \"UK 11\",       \"number\": 10     },     {       \"size\": \"UK 11.5\",       \"number\": 10     }   ] }") @db.Json
   image          String?
   slug           Int         @id @unique @default(autoincrement())
- 
-  Category       Category[]
   Thumbnail      Thumbnail[]
-} 
+  Category       Category[]  @relation("CategoryToProduct")
+}
 
 model Thumbnail {
   id          Int       @id @unique @default(autoincrement())
@@ -44,5 +45,5 @@ model Category {
   slug       Int       @id @unique @default(autoincrement())
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   name       String?
-  Product    Product[]
+  Product    Product[] @relation("CategoryToProduct")
 }
