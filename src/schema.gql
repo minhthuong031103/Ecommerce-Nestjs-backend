@@ -7,6 +7,13 @@ type Auth {
   exampleField: Int!
 }
 
+type Category {
+  Product: [Product!]!
+  createdAt: DateTime!
+  name: String!
+  slug: Int!
+}
+
 input CreateSessionInput {
   id: Float!
   quantity: Float!
@@ -41,20 +48,22 @@ type NewTokenResponse {
 }
 
 type Product {
+  Category: Category!
+  Thumbnail: Thumbnail!
   createdAt: DateTime!
   description: String!
-  id: Int!
   image: String!
   name: String!
+  original_price: Float!
   price: Float!
-  quantity: Int!
-  updatedAt: DateTime!
+  slug: Int!
+  subtitle: String!
 }
 
 type Query {
   auth(id: Int!): Auth!
   hello: String!
-  product(id: Int!): Product!
+  product(slug: Int!): Product!
   products: [Product!]!
 }
 
@@ -73,6 +82,17 @@ input SignUpInput {
   email: String!
   name: String!
   password: String!
+}
+
+type Thumbnail {
+  ThumbnailContent: [ThumbnailContent1!]!
+}
+
+type ThumbnailContent1 {
+  Product: Product!
+  createdAt: DateTime!
+  id: Int!
+  url: String!
 }
 
 input UpdateAuthInput {

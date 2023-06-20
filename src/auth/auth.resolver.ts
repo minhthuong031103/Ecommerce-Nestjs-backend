@@ -15,6 +15,7 @@ import { NewTokenResponse } from './dto/newTokenResponse';
 import { CurrentUserId } from './decorations/currentUserId.decorator';
 import { UseGuards } from '@nestjs/common';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
+import { AuthGuard } from '@nestjs/passport';
 @Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
@@ -50,7 +51,8 @@ export class AuthResolver {
   removeAuth(@Args('id', { type: () => Int }) id: number) {
     return this.authService.remove(id);
   }
-  @Public()
+
+  @UseGuards(AccessTokenGuard)
   @Query(() => String)
   hello(@CurrentUser() user: any) {
     return 'HELLO';

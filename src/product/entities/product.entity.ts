@@ -1,16 +1,20 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
+import { Category } from './category.entity';
+import { Thumbnail } from './thumbnail.entity';
 
 @ObjectType()
 export class Product {
   @Field(() => Int)
-  id: number;
+  slug: number;
   @Field()
   description: string;
-  @Field()
-  price: number;
-  @Field(() => Int, { defaultValue: 0 })
-  quantity?: number;
+  @Field(() => Float)
+  price: any;
+  @Field(() => Float)
+  original_price: any;
 
+  @Field()
+  subtitle: string;
   @Field()
   name: string;
 
@@ -18,6 +22,8 @@ export class Product {
   image: string;
   @Field()
   createdAt: Date;
-  @Field()
-  updatedAt: Date;
+  @Field(() => Thumbnail)
+  Thumbnail: Thumbnail[];
+  @Field(() => Category)
+  Category: Category;
 }

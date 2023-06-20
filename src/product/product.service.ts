@@ -7,11 +7,31 @@ import { PrismaService } from 'src/prisma.service';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.product.findMany({ where: {} });
+  async findAll() {
+    const a = await this.prisma.product.findMany({
+      include: { Category: true, Thumbnail: true },
+    });
+
+    return a;
   }
 
-  findOne(id: number) {
-    return this.prisma.product.findUnique({ where: { id: id } });
+  findOne(slug: any) {
+    return this.prisma.product.findUnique({
+      where: { slug: slug },
+      include: { Thumbnail: true },
+    });
+  }
+  findAllCategories() {
+    return this.prisma.category.findMany({
+      where: {},
+      include: { Product: true },
+    });
+  }
+
+  findProductByCategory(slug: number) {
+    return this.prisma.category.findUnique({
+      where: { slug: slug },
+      include: { Product: true },
+    });
   }
 }

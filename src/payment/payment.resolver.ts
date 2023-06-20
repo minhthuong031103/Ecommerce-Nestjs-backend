@@ -18,6 +18,6 @@ export class PaymentResolver {
     createSessionInput: //type is a function return an array of CreateSessionInput, items is the name of the argument
     CreateSessionInput[],
   ) {
-    return this.paymentService.createCheckoutSession(createSessionInput);
+    // return this.paymentService.createCheckoutSession(createSessionInput);
   }
 }

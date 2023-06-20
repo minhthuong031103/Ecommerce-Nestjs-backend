@@ -35,10 +35,10 @@ import { PaymentModule } from './payment/payment.module';
   controllers: [],
   providers: [
     PrismaService,
-    {
-      provide: APP_GUARD,
-      useClass: AccessTokenGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AccessTokenGuard,
+    // },
   ],
 })
 export class AppModule {}

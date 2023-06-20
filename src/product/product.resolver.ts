@@ -4,6 +4,8 @@ import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
 import { Public } from 'src/auth/decorations/public.decorator';
+import { UseGuards } from '@nestjs/common';
+import { AccessTokenGuard } from 'src/auth/guards/accessToken.guard';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -14,9 +16,8 @@ export class ProductResolver {
     return this.productService.findAll();
   }
 
-  @Public()
   @Query(() => Product, { name: 'product' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.productService.findOne(id);
+  findOne(@Args('slug', { type: () => Int }) slug: number) {
+    return this.productService.findOne(slug);
   }
 }
