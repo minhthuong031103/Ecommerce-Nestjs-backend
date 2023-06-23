@@ -13,20 +13,20 @@ import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useFactory: (config: ConfigService) => {
-        return {
-          autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-          cors: {
-            origin: config.get('CLIENT_URL'),
-          },
-          sortSchema: true,
-          playground: true,
-        };
-      },
-      inject: [ConfigService],
-    }),
+    // GraphQLModule.forRootAsync<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   useFactory: (config: ConfigService) => {
+    //     return {
+    //       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    //       cors: {
+    //         origin: config.get('CLIENT_URL'),
+    //       },
+    //       sortSchema: true,
+    //       playground: true,
+    //     };
+    //   },
+    //   inject: [ConfigService],
+    // }),
     AuthModule,
     UserModule,
     ProductModule,
