@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
 import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
+import { CartModule } from './cart/cart.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -31,6 +32,7 @@ import { PaymentModule } from './payment/payment.module';
     UserModule,
     ProductModule,
     PaymentModule,
+    CartModule,
   ],
   controllers: [],
   providers: [

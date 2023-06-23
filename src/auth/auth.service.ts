@@ -35,7 +35,12 @@ export class AuthService {
         hashedPassword: hashedPasswordArgon,
       },
     });
-    if (user) return { message: 'User created successfully' };
+    const cart = await this.prisma.cart.create({
+      data: {
+        userId: user.id,
+      },
+    });
+    if (user && cart) return { message: 'User created successfully' };
     else return { message: 'User creation failed' };
   }
   async signin(signInInput: SignInInput) {
@@ -80,7 +85,7 @@ export class AuthService {
   async createToken(userId: number, email: string) {
     const accessToken = this.jwtService.sign(
       { userId: userId, email: email },
-      { expiresIn: '1h', secret: this.configService.get('JWT_SECRET') },
+      { expiresIn: '7d', secret: this.configService.get('JWT_SECRET') },
     );
     const refreshToken = this.jwtService.sign(
       { userId: userId, email: email },

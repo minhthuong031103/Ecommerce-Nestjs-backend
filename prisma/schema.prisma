@@ -15,8 +15,9 @@ model User {
   hashedRefreshToken String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-  phone              String? @unique
+  phone              String?  @unique
   address            String?
+  Cart               Cart?
 }
 
 model Product {
@@ -46,4 +47,12 @@ model Category {
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   name       String?
   Product    Product[] @relation("CategoryToProduct")
+}
+
+model Cart {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  userId     Int       @unique
+  cartItems  Json?     @db.Json
+  user       User      @relation(fields: [userId], references: [id])
 }
