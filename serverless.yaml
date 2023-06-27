@@ -1,0 +1,29 @@
+service: cryptostats-backend
+
+useDotenv: true
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+
+    JWT_SECRET: ${env:JWT_SECRET}
+
+    CLIENT_URL: ${env:CLIENT_URL}
+
+    STRIPE_PRIVATE: ${env:STRIPE_PRIVATE}
+
+functions:
+  main:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'

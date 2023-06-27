@@ -11,6 +11,7 @@ import { AccessTokenGuard } from './auth/guards/accessToken.guard';
 import { ProductModule } from './product/product.module';
 import { PaymentModule } from './payment/payment.module';
 import { CartModule } from './cart/cart.module';
+import { AppController } from './app.controller';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -34,7 +35,7 @@ import { CartModule } from './cart/cart.module';
     PaymentModule,
     CartModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     PrismaService,
     // {
